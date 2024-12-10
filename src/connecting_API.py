@@ -34,26 +34,8 @@ class HeadHunterAPI:
                 employers: list[dict] = response.json()['items']
                 for emp in employers:
                     if emp["open_vacancies"] > 0:
-                        self.__employers.append(emp)
+                        if len(self.__employers) < 10:
+                            self.__employers.append(emp)
+                            break
                 self.__params['page'] += 1
         return self.__employers
-
-
-# a = [{'id': '11347515', 'name': 'Aliev HR Services & solutions', 'url': 'https://api.hh.ru/employers/11347515',
-#        'alternate_url': 'https://hh.ru/employer/11347515',
-#        'logo_urls': {'original': 'https://img.hhcdn.ru/employer-logo-original/1318413.PNG',
-#                      '240': 'https://img.hhcdn.ru/employer-logo/6893827.png',
-#                      '90': 'https://img.hhcdn.ru/employer-logo/6893826.png'},
-#        'vacancies_url': 'https://api.hh.ru/vacancies?employer_id=11347515', 'open_vacancies': 3},
-#       {'id': '9024300', 'name': 'Anex Tour (ООО Регнум)', 'url': 'https://api.hh.ru/employers/9024300',
-#        'alternate_url': 'https://hh.ru/employer/9024300',
-#        'logo_urls': {'original': 'https://img.hhcdn.ru/employer-logo-original/984858.jpg',
-#                      '240': 'https://img.hhcdn.ru/employer-logo/5560253.jpeg',
-#                      '90': 'https://img.hhcdn.ru/employer-logo/5560252.jpeg'},
-#        'vacancies_url': 'https://api.hh.ru/vacancies?employer_id=9024300', 'open_vacancies': 1},
-#       {'id': '11332012', 'name': 'Galaxy Groom', 'url': 'https://api.hh.ru/employers/11332012',
-#        'alternate_url': 'https://hh.ru/employer/11332012',
-#        'logo_urls': {'original': 'https://img.hhcdn.ru/employer-logo-original/1315542.png',
-#                      '240': 'https://img.hhcdn.ru/employer-logo/6882403.png',
-#                      '90': 'https://img.hhcdn.ru/employer-logo/6882402.png'},
-#        'vacancies_url': 'https://api.hh.ru/vacancies?employer_id=11332012', 'open_vacancies': 1}]

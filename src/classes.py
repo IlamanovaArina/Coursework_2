@@ -1,3 +1,5 @@
+from time import struct_time
+
 import psycopg2
 
 
@@ -6,8 +8,8 @@ class DBManager:
     def __init__(self, params):
         self.params = params
 
-    def connects(self, button):
-        """ Открытие и закрытие базы данных и курсора """
+    def connects(self, button: str):
+        """ Метод подключения к БД и открытия курсора """
         try:
             if button == "start":
                 conn = psycopg2.connect(database="data_headhunter", **self.params)
@@ -26,23 +28,20 @@ class DBManager:
     def get_companies_and_vacancies_count(self) -> list[dict]:
         """  Метод, который получает список всех компаний и
         количество вакансий у каждой компании """
+
         cur = self.connects("start")
         list_companies_and_vacancies_count = []
 
-        e = cur.execute("SELECT * FROM employers")
-        v = cur.execute("SELECT * FROM vacancies")
-        e_v = cur.fetchall()
-        print('employers\n', e_v)
-
         cur.execute(
-            "SELECT employers.name, employers.open_vacancies FROM employers INNER JOIN vacancies USING(id_employers)")
+            "SELECT employers.name, COUNT(vacancies.id_employers) "
+            "FROM employers INNER JOIN vacancies USING(id_employers) GROUP BY employers.name")
 
         employers_name = cur.fetchall()
 
         self.connects("stop")
 
         for name_and_quantity in employers_name:
-            dict_name_and_quantity = {name_and_quantity[0]: name_and_quantity[1]}
+            dict_name_and_quantity = {"name": name_and_quantity[0], "quantity": name_and_quantity[1]}
 
             list_companies_and_vacancies_count.append(dict_name_and_quantity)
         #  [{}]
@@ -102,7 +101,7 @@ class DBManager:
         return list_salary_above_average
 
     def get_vacancies_with_keyword(self, word_search: str) -> list[dict]:
-        """ Метод, получает список всех вакансий, в названии которых содержатся 
+        """ Метод, получает список всех вакансий, в названии которых содержатся
         переданные в метод слова, например python """
         list_vacancy = []
         cur = self.connects("start")
@@ -122,18 +121,3 @@ class DBManager:
                 list_vacancy.append(dict_vacancy)
 
         return list_vacancy
-
-
-if __name__ == "__main__":
-    params = {"host": "localhost",
-              "user": "postgres",
-              "password": 1650,
-              "port": 5432,
-              "client_encoding": "utf-8"}
-
-    db = DBManager(params)
-    print("get_companies_and_vacancies_count", db.get_companies_and_vacancies_count())
-    print("get_all_vacancies", db.get_all_vacancies())
-    print("get_avg_salary", db.get_avg_salary())
-    print("get_vacancies_with_higher_salary", db.get_vacancies_with_higher_salary())
-    print("get_vacancies_with_keyword", db.get_vacancies_with_keyword("продаж"))

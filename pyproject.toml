@@ -13,6 +13,9 @@ flake8 = "^7.1.1"
 isort = "^5.13.2"
 requests = "^2.32.3"
 chardet = "^5.2.0"
+mypy = "^1.13.0"
+types-requests = "^2.32.0.20241016"
+types-psycopg2 = "^2.9.21.20241019"
 
 [build-system]
 requires = ["poetry-core"]

@@ -2,7 +2,7 @@ import psycopg2
 import requests
 
 
-def creature_bd(params):
+def creature_bd(params: dict):
     """ Создание/подключение к базе данных """
     # -*- coding: utf-8 -*-
 
@@ -15,11 +15,10 @@ def creature_bd(params):
 
     # curs.execute("ALTER DATABASE Data_HeadHunter CHARACTER SET utf8 COLLATE utf8_unicode_ci;")
     conn.close()
-    # print('Победа №1')
 
 
-def creature_table(params):
-
+def creature_table(params: dict):
+    """ Функция для создания таблиц в БД """
     con = psycopg2.connect(database="data_headhunter", **params)
 
     with con.cursor() as cur:

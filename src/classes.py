@@ -1,5 +1,3 @@
-from time import struct_time
-
 import psycopg2
 
 

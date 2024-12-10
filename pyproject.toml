@@ -7,8 +7,28 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-
+psycopg2 = "^2.9.10"
+black = "^24.10.0"
+flake8 = "^7.1.1"
+isort = "^5.13.2"
+requests = "^2.32.3"
+chardet = "^5.2.0"
+mypy = "^1.13.0"
+types-requests = "^2.32.0.20241016"
+types-psycopg2 = "^2.9.21.20241019"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[black]
+line-length = 119
+exclude = ".git"
+
+[isort]
+line_length = 119
+
+[mypy]
+disallow_untyped_defs = true
+warn_return_any = true
+exclude = "venv"
